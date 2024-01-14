@@ -1,0 +1,4 @@
+[debug] [pekko-server] Classpath dependencies List()
+[debug] [pekko-server] Dependencies from configurations List()
+[debug] Bloop wrote the configuration of project 'pekko-server' to '/home/kapi/Téléchargements/WhatSie/conde-kavege-projet/pekko-server/.bloop/pekko-server.json'
+[success] Generated .bloop/pekko-server.json

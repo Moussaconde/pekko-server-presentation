@@ -1,0 +1,82 @@
+openapi: 3.0.0
+info:
+  title: Votre API de Présentation
+  version: 1.0.0
+tags:
+  - name: turnPage
+    description: Tourner une page du document
+  - name: goBack
+    description: Revenir en arriere dans le document
+  - name: getWeather
+    description: Permet d'obtenir les donnees metereologiques
+  - name : submitDocument
+    description : Permet de soumettre le document à lire
+paths:
+  /turnPage:
+    post:
+      tags:
+        - turnPage
+      summary: Tourner une page du document
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pageNumber:
+                  type: integer
+      responses:
+        '200':
+          description: Page tournée avec succès
+  /goBack:
+    post:
+      tags:
+        - goBack
+      summary: Revenir en arrière dans le document
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                steps:
+                  type: integer
+      responses:
+        '200':
+          description: Retour effectué avec succès
+  /getWeather:
+    get:
+      tags:
+        - getWeather
+      summary: Obtenir les données météorologiques
+      responses:
+        '200':
+          description: Données météorologiques récupérées avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  temperature:
+                    type: number
+                  description:
+                    type: string
+  /submitDocument:
+    post:
+      tags:
+        - submitDocument
+      summary: Permet de soumettre le document à lire
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items : 
+                  type: string
+                  example: "Ceci est la premiere page du document" 
+      responses:
+        '200':
+          description: Retour effectué avec succès

@@ -48,6 +48,8 @@ import org.openapitools.server.model.GetWeatherGet200Response
 import pekko.http.scaladsl.model._
 import org.openapitools.server.fr.actors.PageActor
 import org.openapitools.server.api
+import org.openapitools.server.fr.actors.WeatherActor
+
 
 object ServerPresentation {
 
@@ -61,8 +63,11 @@ object ServerPresentation {
     system.systemActorOf(PageActor(), "pageActor")
 
 
-val getWeatherActor: ActorRef[PageActor.Command] =
+ val getWeatherActor: ActorRef[PageActor.Command] =
     system.systemActorOf(PageActor(), "getWeather")
+  
+val weatherActor: ActorRef[WeatherActor.Command] =
+    system.systemActorOf(WeatherActor(), "weatherActor")
 
 
 // Set a timeout for the ask pattern
@@ -75,15 +80,15 @@ import org.apache.pekko.http.scaladsl.model._
 import org.apache.pekko.http.scaladsl.unmarshalling.Unmarshal
 import scala.concurrent.Future
 
-def getWeatherFrom(city: String)(implicit system: ActorSystem[_]): Future[String] = {
-  val apiKey = "cef6e31d67ff7c961d670ac8c514b551"
-  val apiUrl = s"http://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey"
+// def getWeatherFrom(city: String)(implicit system: ActorSystem[_]): Future[String] = {
+//   val apiKey = "cef6e31d67ff7c961d670ac8c514b551"
+//   val apiUrl = s"http://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey"
 
-  val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = apiUrl))
-  responseFuture.flatMap { response =>
-    Unmarshal(response.entity).to[String]
-  }
-}
+//   val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = apiUrl))
+//   responseFuture.flatMap { response =>
+//     Unmarshal(response.entity).to[String]
+//   }
+// }
 
 
 
@@ -167,7 +172,6 @@ def getWeatherFrom(city: String)(implicit system: ActorSystem[_]): Future[String
   //   }
   // }
 
-import org.apache.pekko.http.scaladsl.server.Directives._
 
 object GetWeatherApi extends GetWeatherApiService {
   override def getWeatherGet()(implicit
@@ -175,8 +179,10 @@ object GetWeatherApi extends GetWeatherApiService {
         GetWeatherGet200Response
       ]
   ): Route = {
+      val futureWeather = weatherActor.ask(WeatherActor.GetWeather("Paris", _))
+      print("Mitshibishi")
     
-    onComplete(getWeatherFrom("Paris")(system)) { 
+      onComplete(futureWeather) { 
       case Success(weather) => complete(StatusCodes.OK, weather)
       case Failure(ex) => complete(StatusCodes.InternalServerError, ex.getMessage)
     }
@@ -229,3 +235,4 @@ object GetWeatherApi extends GetWeatherApiService {
   }
 
 }
+

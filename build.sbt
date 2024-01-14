@@ -43,8 +43,10 @@ libraryDependencies ++= Seq(
   "org.apache.pekko" %% "pekko-stream" % PekkoVersion,
   "org.apache.pekko" %% "pekko-http" % PekkoHTTPVersion,
   "org.apache.pekko" %% "pekko-http-spray-json" % PekkoHTTPVersion,
+  "com.typesafe.play" %% "play-json" % "2.9.2"
 )
 //.map(_.cross(CrossVersion.for3Use2_13))
 
 libraryDependencies +=  "ch.qos.logback" % "logback-classic" % "1.2.3"
+
 

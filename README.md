@@ -56,10 +56,10 @@ sequenceDiagram
 autonumber
     Client->>+Server: post request to "/submitDocument" endpoint
     Server->>+PageActor: saveDocument(doc)
-    PageActor->>-Server: Document bien reçu
-    Server->>-Client
+    PageActor-->>-Server: Document bien reçu
+    Server-->>-Client: Document bien reçu
 ```
-
+	
 ### Changement de page en arrière 
 
 ```mermaid
@@ -67,8 +67,8 @@ sequenceDiagram
 autonumber
 Client->>+Server: post request to "/goBack" endpoint
     Server->>+PageActor: Back(steps)
-    PageActor->>-Server: (steps : Page) 
-    Server->>-Client : (page : Page)
+    PageActor-->>-Server: (steps : Page) 
+    Server-->>-Client : (page : Page)
 ```
 
 ### Changement de page en avant
@@ -78,8 +78,8 @@ sequenceDiagram
 autonumber
 Client->>+Server: post request to "/turnPage" endpoint
     Server->>+PageActor: Turn(page)
-    PageActor->>-Server: (page : Page) 
-    Server->>-Client : (page : Page)
+    PageActor-->>-Server: (page : Page) 
+    Server-->>-Client : (page : Page)
 ```
 
 ### Recuperation du temps qu'il fait à Paris
@@ -89,8 +89,8 @@ sequenceDiagram
 autonumber
 Client->>+Server: post request to "/getWeather" endpoint
     Server->>+GetWeatherActor: GetWeather
-    GetWeatherActor->>-Server: JSON {temp:12, description:'froid'}
-    Server->>-Client : JSON {temp:12, description:'froid'}
+    GetWeatherActor-->>-Server: JSON {temp:12, description:'froid'}
+    Server-->>-Client : JSON {temp:12, description:'froid'}
 ```
 
 
@@ -112,7 +112,7 @@ Pour tourner la page vers la page precedente:
  curl -X POST -H "Content-Type: application/json" -d '{}' http://localhost:8081/goBack
 
 
-## Croquis front-end
+## interface graphique
 
 ![alt croquis_frontend](./ui.svg )
 
